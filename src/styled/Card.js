@@ -8,7 +8,7 @@ const style = () => css`
   flex: 1;
   margin: ${rem(4)};
   align-items: flex-start;
-  height: 98%
+  height: 95%
   
   .card {
     background-color: ${colors.white};
@@ -18,10 +18,11 @@ const style = () => css`
     box-sizing: border-box;
     cursor: pointer;
     height: 100%
-
-    &__content {    
-      padding: ${rem(16)};
+    
+    &__selected {
+      border: ${colors.primary} 1px solid;
     }
+
 
     &:hover {
       background-color: ${colors.lightGraylighter};
@@ -30,14 +31,13 @@ const style = () => css`
 `
 const CardWrapper = styled.div([style]);
 
-export function Card({children}) {
-
+export function Card(props) {
   return (
     <CardWrapper>
-      <div className="card">
+      <div className={props.selected ? 'card card__selected': 'card' } >
         <div className="card__header">
           <div className="card__content">
-            {children}
+            {props.children}
           </div>
         </div>
       </div>

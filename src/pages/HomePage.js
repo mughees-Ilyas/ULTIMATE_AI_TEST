@@ -11,8 +11,9 @@ import {Card} from "../styled/Card";
 import { colors } from "../theme/colors";
 
 import ChatBubble from 'react-chat-bubble';
-import robot from '../assets/icons/robot.jpeg';
-import human from '../assets/icons/human.png';
+import robot from '../assets/icons/robot.svg';
+import bar from '../assets/icons/bar.jpeg';
+
 
 
 const Description = styled.div`
@@ -20,6 +21,17 @@ const Description = styled.div`
   padding: ${rem(8)};
 `;
 
+const CardHeaderWrapper = styled.div`
+    border-bottom: 1px solid #b5aeae;
+`;
+
+const CardHeader = styled.div`
+    padding: ${rem(16)};
+    text-align: left;
+    font: normal normal normal 16px/22px Open Sans;
+    letter-spacing: 0px;
+    display: flex;
+`;
 
 const DisplayCard = styled.div`
   display: grid;
@@ -27,9 +39,6 @@ const DisplayCard = styled.div`
   grid-column-gap: 10px;
   grid-row-gap: 10px;
   
-  .CardWrapper {    
-      background-color: ${colors.primary};
-    }
 `;
 
 const DisplayRow = styled.div`
@@ -37,7 +46,40 @@ const DisplayRow = styled.div`
   justify-content:space-between
    align-items: center;
 `;
+const Header = styled.div`
+  height: ${rem(320)};
+  background: ${colors.background} 0% 0% no-repeat padding-box
+   padding-top: ${rem(16)};
+    padding-bottom: ${rem(32)};
+`;
 
+const CardBody = styled.div`
+    padding: ${rem(16)};
+`;
+
+
+const HeaderItems = styled.div`
+  padding-top: ${rem(16)};
+  max-width: ${rem(1300)};
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+`;
+
+
+const Image = styled.div`
+  width: 150px;
+  height: 150px;
+  display: flex;
+  margin-right: ${rem(32)}; 
+  justify-content: center;
+  align-items: center;
+  background: ${colors.base} 0% 0% no-repeat padding-box
+`;
+
+const InputWrapper = styled.div`
+  padding-right: ${rem(8)};
+`;
 
 function HomePage({dispatch, data}) {
     const [ids, setIds] = useState(new Set());
@@ -78,35 +120,64 @@ function HomePage({dispatch, data}) {
         setAllSelected(!allSelected);
    }
 
+    function reset() {
+        setIds(new Set());
+        setAllSelected(false);
+    }
+
   return (
     <div>
         <Page>
-            <Heading> Welcome to Ultimate AI bot settings</Heading>
-            <Description>Here you can select automatic responses that your bot can give for common user behavior</Description>
-            <Description>Just click on card to select the behaviors for which you want to automate a response.</Description>
-            <Heading>User behavior Categories</Heading>
-            <Button type='PrimaryHollow' onClick={() => toggleSelect()}> {allSelected ? 'UnSelect All' : 'Select All'}</Button>
+            <Header>
+                <HeaderItems>
+                    <img src={bar} alt="bar" width="1300" height="100" />
+                </HeaderItems>
+                <HeaderItems>
+                    <Image>
+                        <img src={robot} alt="rboto" width="100" height="100" />
+                    </Image>
+                    <div>
+                        <Heading> Welcome to Ultimate AI bot settings</Heading>
+                        <Description>Set your automatic responses for generic conversations people have with our bot, such as "Hi, Hello" or "Good bye". Choose all the conversations relevant to you, and select "Next".</Description>
+                        <Button> Next </Button>
+                    </div>
+                </HeaderItems>
+            </Header>
+
+            <DisplayRow>
+                <Heading>Possible conversations: {ids.size} selected</Heading>
+                <div>
+                    <Button type='PrimaryHollow' onClick={() => toggleSelect()}> {allSelected ? 'Deselect All' : 'Select All'}</Button>
+                    <Button type='PrimaryHollow' onClick={() => reset()}> reset</Button>
+                </div>
+
+
+            </DisplayRow>
+
+
             <DisplayCard>
                 {data &&
                 data.map((row, index) => (
                     <div key={"intent_" + row.id }
                          className={ids.has(row.id) ? "CardWrapper" : ""}
                          onClick={() => updateCard(row.id)}>
-                        <Card>
-                            <DisplayRow>
-                                <Heading>{row.name}</Heading>
-                            </DisplayRow>
-                            <Description>{row.description}</Description>
-                            <Description>Example: {"'" +row.trainingData.expressions[0].text + "', "} {"'" +row.trainingData.expressions[1].text + "', "} {"'" +row.trainingData.expressions[2].text + "', "} </Description>
-                            <ChatBubble messages = {[{
-                                "type" : 0,
-                                "image": human,
-                                "text": row.trainingData.expressions[0].text
-                            }, {
-                                "type": 1,
-                                "image": robot,
-                                "text": row.reply.text
-                            }]} onNewMessage={(x)=>console.log(x)} />
+                        <Card selected={ids.has(row.id)}>
+                            <CardHeaderWrapper>
+                                <CardHeader>
+                                    <InputWrapper>
+                                        <input type="checkbox" checked={ids.has(row.id)} onChange={() => updateCard(row.id)}/>
+                                    </InputWrapper>
+                                {row.name}
+                                </CardHeader>
+                            </CardHeaderWrapper>
+                            <CardBody>
+                                <ChatBubble messages = {[{
+                                    "type": 1,
+                                    "image": robot,
+                                    "text": row.reply.text
+                                }]} onNewMessage={(x)=>console.log(x)} />
+                                <Description> In response to: {"'" +row.trainingData.expressions[0].text + "', "} {"'" +row.trainingData.expressions[1].text + "', "} {"'" +row.trainingData.expressions[2].text + "'"} </Description>
+                            </CardBody>
                         </Card>
                     </div>
                 ))}

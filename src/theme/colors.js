@@ -6,6 +6,7 @@ const themeColors = {
   base: "#ffffff",
   danger:'#CB3535',
   lightGray: '#7e8c8f',
+  background: '#FBFBFB',
 };
 
 const colorVariations = {
@@ -18,7 +19,8 @@ export const colors = {
   ...makeVariations("secondary", themeColors.secondary),
   ...makeVariations("base", themeColors.base),
   ...makeVariations("danger", themeColors.danger),
-    ...makeVariations("lightGray", themeColors.lightGray)
+    ...makeVariations("lightGray", themeColors.lightGray),
+  ...makeVariations("background", themeColors.background),
 };
 
 function makeVariations(name, color) {

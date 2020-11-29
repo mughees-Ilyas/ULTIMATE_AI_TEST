@@ -6,5 +6,5 @@ export const Page = styled.div`
     margin: 0 auto;
     padding: ${rem(16)};
     flex: 1;
-    max-width: ${rem(1200)};
+    max-width: ${rem(1500)};
 `;
