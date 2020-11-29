@@ -81,6 +81,7 @@ const InputWrapper = styled.div`
   padding-right: ${rem(8)};
 `;
 
+
 function HomePage({dispatch, data}) {
     // state for storing selected ids of cards
     const [ids, setIds] = useState(new Set());
@@ -146,21 +147,7 @@ function HomePage({dispatch, data}) {
   return (
     <div>
         <Page>
-            <Header>
-                <HeaderItems>
-                    <img src={bar} alt="bar" width="1300" height="100" />
-                </HeaderItems>
-                <HeaderItems>
-                    <Image>
-                        <img src={robot} alt="rboto" width="100" height="100" />
-                    </Image>
-                    <div>
-                        <Heading> Welcome to Ultimate AI bot settings</Heading>
-                        <Description>Set your automatic responses for generic conversations people have with our bot, such as "Hi, Hello" or "Good bye". Choose all the conversations relevant to you, and select "Next".</Description>
-                        <Button> Next </Button>
-                    </div>
-                </HeaderItems>
-            </Header>
+            <PageHeader/>
 
             <DisplayRow>
                 <Heading>Possible conversations: {ids.size} selected</Heading>
@@ -175,9 +162,9 @@ function HomePage({dispatch, data}) {
                 {data &&
                 data.map((row) => (
                     <div key={"intent_" + row.id }
-                         className={ids.has(row.id) ? "CardWrapper" : ""}
                          onClick={() => updateCard(row.id)}>
                         <Card selected={ids.has(row.id)}>
+
                             <CardHeaderWrapper>
                                 <CardHeader>
                                     <InputWrapper>
@@ -186,6 +173,7 @@ function HomePage({dispatch, data}) {
                                 {row.name}
                                 </CardHeader>
                             </CardHeaderWrapper>
+
                             <CardBody>
                                 <ChatBubble messages = {[{
                                     "type": 1,
@@ -202,6 +190,27 @@ function HomePage({dispatch, data}) {
         </Page>
     </div>
   );
+}
+
+// a subComponent to keep the header HTML separate
+function PageHeader() {
+    return (
+        <Header>
+            <HeaderItems>
+                <img src={bar} alt="bar" width="1300" height="100" />
+            </HeaderItems>
+            <HeaderItems>
+                <Image>
+                    <img src={robot} alt="rboto" width="100" height="100" />
+                </Image>
+                <div>
+                    <Heading> Welcome to Ultimate AI bot settings</Heading>
+                    <Description>Set your automatic responses for generic conversations people have with our bot, such as "Hi, Hello" or "Good bye". Choose all the conversations relevant to you, and select "Next".</Description>
+                    <Button> Next </Button>
+                </div>
+            </HeaderItems>
+        </Header>
+    )
 }
 
 // function to connect my higher states to props
