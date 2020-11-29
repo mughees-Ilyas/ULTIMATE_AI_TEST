@@ -3,7 +3,6 @@ import React from "react";
 import { colors } from "../theme/colors";
 import { rem } from "polished";
 import { NavLink } from "react-router-dom";
-import AccountPage from "../pages/AccountPage";
 import HomePage from "../pages/HomePage";
 import { Route, Switch } from "react-router-dom";
 
@@ -53,13 +52,11 @@ function Navigation() {
       <div>
           <NavBar>
               <NavItem to="/" exact activeClassName="active">Home</NavItem>
-              <NavItem to="/Request" exact activeClassName="active">Account</NavItem>
           </NavBar>
           <Container>
               <Content>
                   <Switch>
                       <Route path="/" exact component={HomePage} />
-                      <Route path="/Request" component={AccountPage} />
                       <Route render={() => <Heading>404 Page not found</Heading>} />
                   </Switch>
               </Content>

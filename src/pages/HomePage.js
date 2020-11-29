@@ -82,21 +82,31 @@ const InputWrapper = styled.div`
 `;
 
 function HomePage({dispatch, data}) {
+    // state for storing selected ids of cards
     const [ids, setIds] = useState(new Set());
+    // if all the intends are selected set this state to true.
     const [allSelected, setAllSelected] = useState(false);
 
-
+    // dispatch on init to get the data.
     useEffect(() => {
         dispatch(intent_action());
     },[dispatch]);
 
+    // run side effects when data is fetched. right now we are not doing anything with data so we can remove this useEffect but keeping it for showcase
+    // as how to handle side effects on component
     useEffect(() => {
         if(data) {
             console.log(data);
         }
     },[data]);
 
+    /*
+    * function execute on click on card.
+    * cardData {integer}: id of intent,
+    */
     function updateCard(cardData){
+
+        //if id is already present remove it else add it,
         const newSet = new Set(ids);
         if (newSet.has(cardData)) {
             newSet.delete(cardData);
@@ -106,9 +116,14 @@ function HomePage({dispatch, data}) {
             setIds(newSet);
         }
 
+        // check if we have selected everything by selecting this card. set the state accordingly
         setAllSelected(newSet.size === data.length);
     }
 
+    /*
+    * function execute on select/deSelect button click
+    * it will switch between selecting everything or deselecting everything
+    */
    function toggleSelect() {
         if(allSelected) {
             setIds(new Set());
@@ -120,6 +135,9 @@ function HomePage({dispatch, data}) {
         setAllSelected(!allSelected);
    }
 
+    /*
+     * function to reset the selections
+     */
     function reset() {
         setIds(new Set());
         setAllSelected(false);
@@ -150,14 +168,12 @@ function HomePage({dispatch, data}) {
                     <Button type='PrimaryHollow' onClick={() => toggleSelect()}> {allSelected ? 'Deselect All' : 'Select All'}</Button>
                     <Button type='PrimaryHollow' onClick={() => reset()}> reset</Button>
                 </div>
-
-
             </DisplayRow>
 
 
             <DisplayCard>
                 {data &&
-                data.map((row, index) => (
+                data.map((row) => (
                     <div key={"intent_" + row.id }
                          className={ids.has(row.id) ? "CardWrapper" : ""}
                          onClick={() => updateCard(row.id)}>
@@ -188,7 +204,7 @@ function HomePage({dispatch, data}) {
   );
 }
 
-
+// function to connect my higher states to props
 const mapStateToProps = (state, ownProps) => {
     return {
     ...ownProps,
