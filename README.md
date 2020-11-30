@@ -22,7 +22,7 @@ As there is no backend, the changes are persistant only on frontend and will be 
 
 
 ### Home page 
-There is only 1 page that shows the list of intents and user and select/deselect their choices. The next button on the screen is a dummy button.
+There is only 1 page that shows the list of intents and user can select/deselect their choices. The next button on the screen is a dummy button.
 
 ### Directory Structure
 
